@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+    stages{
+        stage("code"){
+            steps {
+                echo "cloning the code"
+                git url:"https://github.com/areefann567/newprojectnote.git",branch: "main"
+            }
+        }
+        stage("build"){
+             steps {
+              echo "Bulding the code"
+              sh "docker build -t my-note-app ."
+            }
+        }
+        stage("push to docker hub"){
+             steps {
+                 echo "pushing the image to docker hub"
+                  withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
+                   sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                   sh "docker tag my-note-app:latest ${env.dockerHubUser}/my-note-app:latest"
+                   sh "docker push ${env.dockerHubUser}/my-note-app:latest"
+                   echo 'image has pushed'
+                  }
+            }
+        }
+        stage("Deploy"){
+             steps{
+                echo "Deploying the container"
+                 sh "docker-compose down && docker-compose up -d"
+            }
+        }
+    }
+}
