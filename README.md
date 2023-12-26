@@ -1,4 +1,5 @@
 # Notes App
+created a Jenkins CI/CD pipeline for a Dockerized web application, optimizing development and deployment.
 <img width="498" alt="Screenshot 2023-12-08 111430" src="https://github.com/areefann567/newprojectnote/assets/120305645/5dbecf59-3da8-4deb-adce-55cc8b51c8d6">
 
 
